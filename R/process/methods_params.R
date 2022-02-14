@@ -1,5 +1,6 @@
 # List of the methods to call
 stats_list = list(c('aucell','wmean','wsum','ulm','mlm','viper','gsva','ora','fgsea','udt','mdt'))
+stats_list = list(c('mlmreg', 'mlm'))
 
 # Random seed
 seed = 42
@@ -18,5 +19,6 @@ opts_list <- list(list(
   viper = list(verbose=FALSE, pleiotropy=T, eset.filter=F),
   gsva = list(verbose = FALSE, method = "gsva"),
   ora = list(n_up=300, n_bottom=300, n_background=20000, with_ties = TRUE),
-  fgsea = list(times=100, nproc=nproc, seed=seed)
+  fgsea = list(times=100, nproc=nproc, seed=seed),
+  mlmreg = list(alpha=0) # 0 for ridge, 1 for lasso
 ))

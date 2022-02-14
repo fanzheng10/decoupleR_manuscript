@@ -9,7 +9,7 @@ prc_path <- file.path('data', 'prc')
 dir.create(prc_path, showWarnings = F, recursive = T)
 expr_fname <- file.path(raw_path, "php_expr.rds")
 meta_fname <- file.path(raw_path, "php_meta.rds")
-netw_fname <- file.path(raw_path, 'KSN.rds')
+netw_fname <- file.path(raw_path, 'KSN_weight.rds')
 
 # Design
 design <- tibble(
@@ -24,7 +24,8 @@ design <- tibble(
   target_col = "target", # target name of the set source
   filter_col = "confidence", # column by which we wish to filter
   filter_crit = list(c('A')), # criteria by which we wish to filter,
-  weight_crit = list(list(.likelihood = "likelihood"))
+  # weight_crit = list(list(.likelihood = "likelihood"))
+  weight_crit = list(list(.mor = "mor"))
 )
 
 design <- bind_rows(
@@ -47,4 +48,10 @@ result <- run_benchmark(
 )
 
 # Save result
-saveRDS(result@bench_res, file.path(prc_path, 'php_result.rds'))
+if (opts_list[[1]][['mlmreg']]$alpha == 0) {
+  saveRDS(result, file.path(prc_path, 'php_result_ridge_r2.rds'))
+}
+if (opts_list[[1]][['mlmreg']]$alpha == 1) {
+  saveRDS(result, file.path(prc_path, 'php_result_lasso_r2.rds'))
+}
+result@summary$summary_table

@@ -24,6 +24,7 @@ design <- tibble(
   target_col = "target", # target name of the set source
   filter_col = "confidence", # column by which we wish to filter
   filter_crit = list(c('A','B','C')) # criteria by which we wish to filter
+  # filter_crit = list(c('A'))
 )
 
 # Run benchmark
@@ -40,4 +41,11 @@ result <- run_benchmark(
 )
 
 # Save result
-saveRDS(result@bench_res, file.path(prc_path, 'rna_result.rds'))
+if (opts_list[[1]][['mlmreg']]$alpha == 0) {
+  saveRDS(result, file.path(prc_path, 'rna_result_abc_ridge_r2.rds'))
+}
+if (opts_list[[1]][['mlmreg']]$alpha == 1) {
+  saveRDS(result, file.path(prc_path, 'rna_result_abc_lasso_r2.rds'))
+}
+
+result@summary$summary_table
